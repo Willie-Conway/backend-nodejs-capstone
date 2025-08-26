@@ -15,27 +15,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
 
-      - name: Install Dependencies (with retries)
+      - name: Install Dependencies
         run: |
-          for i in {1..5}; do
-            npm install eslint eslint-config-standard eslint@^8.0.1 \
-              eslint-plugin-import@^2.25.2 eslint-plugin-n@^16.0.0 \
-              eslint-plugin-promise@^6.0.0 && break || sleep 15
-          done
+          npm install eslint@8.57.1 eslint-config-standard eslint-plugin-import@2.25.2 \
+            eslint-plugin-n@16.0.0 eslint-plugin-promise@6.0.0
 
       - name: Run ESLint
         run: |
-          npx eslint -c .eslintrc.js ./secondChance-backend/app.js \
-            ./secondChance-backend/auth.js \
-            ./secondChance-backend/secondChanceItemsRoutes.js \
-            ./secondChance-backend/searchRoutes.js \
-            ./secondChance-backend/index.js \
-            ./sentiment/index.js
-
-          echo "Linted all the js files successfully"
+          npx eslint -c .eslintrc.js ./secondChance-backend/**/*.js ./sentiment/**/*.js
+          echo "Linted all JS files successfully"

@@ -1,12 +1,9 @@
 {
   "name": "giftlink-backend",
   "version": "1.0.0",
-  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint . --ext .js",
-    "lint:fix": "eslint . --ext .js --fix",
     "test": "mocha",
     "start": "node app.js",
     "dev": "nodemon app.js"

@@ -12,29 +12,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout your repository
+      # 1️⃣ Checkout your repo
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Set up Node.js with caching
+      # 2️⃣ Set up Node.js with npm caching
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
 
-      # 3️⃣ Configure faster npm registry (optional but reduces E429)
-      - name: Configure npm registry mirror
-        run: npm config set registry https://registry.npmmirror.com
-
-      # 4️⃣ Install ESLint dependencies
+      # 3️⃣ Install ESLint dependencies
       - name: Install ESLint Dependencies
         run: |
-          npm ci || npm install eslint@8.57.1 eslint-config-standard eslint-plugin-import@2.25.2 \
-            eslint-plugin-n@16.0.0 eslint-plugin-promise@6.0.0 --prefer-offline --no-audit
+          npm install --save-dev eslint@8.57.1 eslint-config-standard eslint-plugin-import@2.25.2 \
+            eslint-plugin-n@16.0.0 eslint-plugin-promise@6.0.0
 
-      # 5️⃣ Run ESLint on all JS files in your target folders
+      # 4️⃣ Run ESLint on your JS files
       - name: Run ESLint
         run: |
           npx eslint -c .eslintrc.js ./secondChance-backend/**/*.js ./sentiment/**/*.js --fix
-          echo "Linted all JS files successfully"
+          echo "✅ Linted all JS files successfully"

@@ -15,21 +15,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'   # enables npm caching
+          cache: 'npm'
 
-      - name: Install Dependencies
+      - name: Install Dependencies (with retries)
         run: |
-          npm install eslint eslint-config-standard eslint@^8.0.1 \
-            eslint-plugin-import@^2.25.2 eslint-plugin-n@^16.0.0 \
-            eslint-plugin-promise@^6.0.0
+          for i in {1..5}; do
+            npm install eslint eslint-config-standard eslint@^8.0.1 \
+              eslint-plugin-import@^2.25.2 eslint-plugin-n@^16.0.0 \
+              eslint-plugin-promise@^6.0.0 && break || sleep 15
+          done
 
       - name: Run ESLint
         run: |
-          ./node_modules/.bin/eslint -c .eslintrc.js ./secondChance-backend/app.js \
+          npx eslint -c .eslintrc.js ./secondChance-backend/app.js \
             ./secondChance-backend/auth.js \
             ./secondChance-backend/secondChanceItemsRoutes.js \
             ./secondChance-backend/searchRoutes.js \

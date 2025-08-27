@@ -66,6 +66,7 @@ router.post('/', upload.single('file'), async(req, res,next) => {
         await lastItemQuery.forEach(item => {
             secondChanceItem.id = (parseInt(item.id) + 1).toString();
         });
+        // eslint-disable-next-line camelcase
         const date_added = Math.floor(new Date().getTime() / 1000);
         secondChanceItem.date_added = date_added
 

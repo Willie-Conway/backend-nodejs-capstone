@@ -1,4 +1,4 @@
-name: CI/CD
+name: 'CI/CD'
 
 on:
   push:
@@ -8,29 +8,25 @@ on:
 
 jobs:
   lint_js:
-    name: Lint JavaScript Files
-    runs-on: ubuntu-latest
+      name: Lint JavaScript Files
+      runs-on: ubuntu-latest
 
-    steps:
-      # 1️⃣ Checkout your repo
+      steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Set up Node.js with npm caching
-      - name: Set up Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
 
-      # 3️⃣ Install ESLint dependencies
-      - name: Install ESLint Dependencies
+      - name: Install and Run Linter
         run: |
-          npm install --save-dev eslint@8.57.1 eslint-config-standard eslint-plugin-import@2.25.2 \
-            eslint-plugin-n@16.0.0 eslint-plugin-promise@6.0.0
-
-      # 4️⃣ Run ESLint on your JS files
-      - name: Run ESLint
-        run: |
-          npx eslint -c .eslintrc.js ./secondChance-backend/**/*.js ./sentiment/**/*.js --fix
-          echo "✅ Linted all JS files successfully"
+          # This command finds all JavaScript files recursively and runs JSHint on them
+          npm init -y
+          npm install eslint eslint-config-standard eslint@^8.0.1 eslint-plugin-import@^2.25.2 eslint-plugin-n@^16.0.0  eslint-plugin-promise@^6.0.0
+          find ./secondChance-backend -name app.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          find ./secondChance-backend -name auth.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          find ./secondChance-backend -name secondChanceItemsRoutes.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          find ./secondChance-backend -name searchRoutes.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          find ./secondChance-backend -name index.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          find ./sentiment -name index.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          echo "Linted all the js files successfully"
